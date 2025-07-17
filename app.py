@@ -5,7 +5,7 @@ from pptx.dml.color import RGBColor
 from pptx.util import Pt
 from datetime import datetime
 
-# 🎨 Color Themes
+# Color Themes
 THEMES = {
     "Classic Blue": {"bg": (255, 255, 255), "title": (0, 102, 204), "bullet": (0, 0, 0), "accent": (0, 51, 153)},
     "Dark Orange": {"bg": (30, 30, 30), "title": (255, 140, 0), "bullet": (200, 200, 200), "accent": (255, 85, 0)},
@@ -14,7 +14,7 @@ THEMES = {
     "Minimal Gray": {"bg": (250, 250, 250), "title": (60, 60, 60), "bullet": (90, 90, 90), "accent": (120, 120, 120)}
 }
 
-# 🔮 Mistral API
+# Mistral API
 def call_mistral(prompt: str):
     response = requests.post(
         "http://localhost:11434/api/generate",
@@ -25,7 +25,7 @@ def call_mistral(prompt: str):
         raise Exception(f"API error: {resp_json}")
     return resp_json["response"]
 
-# 🎨 Theme Styling
+# Theme Styling
 def apply_theme(slide, title_box, content_box, theme_colors):
     slide.background.fill.solid()
     slide.background.fill.fore_color.rgb = RGBColor(*theme_colors["bg"])
@@ -39,7 +39,7 @@ def apply_theme(slide, title_box, content_box, theme_colors):
             para.font.size = Pt(20)
             para.font.color.rgb = RGBColor(*theme_colors["bullet"])
 
-# 🧱 PPTX Creation
+# PPTX Creation
 def create_presentation_from_text(text, filename="presentation.pptx", theme_colors=None):
     prs = Presentation()
     slides_text = text.strip().split("Slide")[1:]
@@ -71,31 +71,31 @@ def create_presentation_from_text(text, filename="presentation.pptx", theme_colo
     prs.save(filename)
     return filename
 
-# 🖼️ Streamlit UI
-st.set_page_config(page_title="🧠 AI PPT Generator", layout="centered")
-st.title("📊 AI PPT Generator with Mistral")
-st.markdown("Offline slide generation using **Mistral via Ollama** 🧠💻")
+# Streamlit UI
+st.set_page_config(page_title="AI PPT Generator", layout="centered")
+st.title("AI PPT Generator with Mistral")
+st.markdown("Offline slide generation using **Mistral via Ollama**")
 
-# 🧠 Mode Selection
-use_custom_prompt = st.checkbox("📝 Use Custom Prompt")
+# Mode Selection
+use_custom_prompt = st.checkbox("Use Custom Prompt")
 
-# 🎛️ Inputs
+# Inputs
 custom_prompt = ""
 topic, description = "", ""
 num_slides = 5
 
 if use_custom_prompt:
-    custom_prompt = st.text_area("✍️ Custom Prompt", height=200, value="Create a 5-slide presentation on Quantum Computing with slide titles and 4 bullet points each.")
+    custom_prompt = st.text_area("Custom Prompt", height=200, value="Create a 5-slide presentation on Quantum Computing with slide titles and 4 bullet points each.")
 else:
-    topic = st.text_input("📌 Topic", "Applications of AI in Schools")
-    description = st.text_area("📄 Description", "Example: Focus on hospital use cases like diagnosis, monitoring, etc.")
-    num_slides = st.slider("📑 Number of Slides", 3, 10, 5)
+    topic = st.text_input("Topic", "Applications of AI in Schools")
+    description = st.text_area("Description", "Example: Focus on hospital use cases like diagnosis, monitoring, etc.")
+    num_slides = st.slider("Number of Slides", 3, 10, 5)
 
-theme_choice = st.selectbox("🎨 Theme", list(THEMES.keys()))
+theme_choice = st.selectbox("Theme", list(THEMES.keys()))
 theme_colors = THEMES[theme_choice]
 
-# 🚀 Generate
-if st.button("🚀 Generate Presentation"):
+# Generate
+if st.button("Generate Presentation"):
     with st.spinner("Generating slides with Mistral..."):
         try:
             if use_custom_prompt:
